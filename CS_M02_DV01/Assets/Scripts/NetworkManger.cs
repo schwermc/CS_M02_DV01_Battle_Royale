@@ -12,7 +12,7 @@ public class NetworkManger : MonoBehaviourPunCallbacks
     private void Awake()
     {
         instance = this;
-        DontDestroyOnLoad(gameObject);
+        //DontDestroyOnLoad(gameObject);
     }
 
     private void Start()
@@ -42,6 +42,7 @@ public class NetworkManger : MonoBehaviourPunCallbacks
         PhotonNetwork.JoinRoom(roomName);
     }
 
+    [PunRPC]
     public void changeScene (string scenename)
     {
         PhotonNetwork.LoadLevel(scenename);
