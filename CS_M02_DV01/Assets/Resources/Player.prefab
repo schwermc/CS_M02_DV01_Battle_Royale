@@ -153,6 +153,7 @@ MonoBehaviour:
   moveSpeed: 10
   jumpForce: 5
   rig: {fileID: 3201085455189059148}
+  id: 0
 --- !u!114 &1999570370742830239
 MonoBehaviour:
   m_ObjectHideFlags: 0

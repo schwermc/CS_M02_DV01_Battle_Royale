@@ -1,10 +1,9 @@
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
 using Photon.Pun;
 using Photon.Realtime;
-using System.Collections.Generic;
-using Unity.VisualScripting;
 
 public class Menu : MonoBehaviourPunCallbacks, ILobbyCallbacks
 {
@@ -125,6 +124,11 @@ public class Menu : MonoBehaviourPunCallbacks, ILobbyCallbacks
         roomInfoText.text = "<b>Room Name</b>\n" + PhotonNetwork.CurrentRoom.Name;
     }
 
+    public override void OnPlayerLeftRoom (Player otherPlayer)
+    {
+        UpdateLobbyUI();
+    }
+
     public void OnStartGameButton()
     {
         // hide the room
@@ -138,7 +142,7 @@ public class Menu : MonoBehaviourPunCallbacks, ILobbyCallbacks
     public void OnLeaveLobbyButton()
     {
         PhotonNetwork.LeaveRoom();
-        SetScreen(mainScreen);
+        SetScreen(lobbyBrowserScreen);
     }
 
     void UpdateLobbyBrowserUI()
