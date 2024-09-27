@@ -7,7 +7,7 @@ public enum PickupType
     Ammo
 }
 
-public class Pickup : MonoBehaviour
+public class Pickup : MonoBehaviourPun
 {
     public PickupType type;
     public int value;
@@ -28,7 +28,16 @@ public class Pickup : MonoBehaviour
                 player.photonView.RPC("GiveAmmo", player.photonPlayer, value);
 
             // destroy the object
-            PhotonNetwork.Destroy(gameObject);
+            // PhotonNetwork.Destroy(gameObject);
+            // BUG: pickups don't get remove and throw an error
+            // "Failed to 'network-remove' GameObject because it is missing a valid InstantiationId on view"
+            photonView.RPC("DestroyPickup", RpcTarget.AllBuffered);
         }
+    }
+
+    [PunRPC]
+    public void DestroyPickup()
+    {
+        Destroy(gameObject);
     }
 }
