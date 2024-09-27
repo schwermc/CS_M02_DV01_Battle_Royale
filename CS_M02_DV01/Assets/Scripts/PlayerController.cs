@@ -25,7 +25,23 @@ public class PlayerController : MonoBehaviourPun
     public MeshRenderer mr;
 
     private int curAttackId;
-    // public PlayerWeapon weapon;
+    public PlayerWeapon weapon;
+
+    [PunRPC]
+    public void Initialize(Player player)
+    {
+        id = player.ActorNumber;
+        photonPlayer = player;
+
+        GameManager.instance.players[id - 1] = this;
+
+        // is this not out local player?
+        if (!photonView.IsMine)
+        {
+            GetComponentInChildren<Camera>().gameObject.SetActive(false);
+            rig.isKinematic = true;
+        }
+    }
 
     private void Update()
     {
@@ -36,6 +52,8 @@ public class PlayerController : MonoBehaviourPun
 
         if (Input.GetKeyDown(KeyCode.Space))
             TryJump();
+        if (Input.GetMouseButtonDown(0))
+            weapon.TryShoot();
     }
 
     void Move()
@@ -60,22 +78,6 @@ public class PlayerController : MonoBehaviourPun
         // shoot the raycast
         if(Physics.Raycast(ray, 1.5f))
             rig.AddForce(Vector3.up * jumpForce, ForceMode.Impulse);
-    }
-
-    [PunRPC]
-    public void Initialize(Player player)
-    {
-        id = player.ActorNumber;
-        photonPlayer = player;
-
-        GameManager.instance.players[id - 1] = this;
-
-        // is this not out local player?
-        if(!photonView.IsMine)
-        {
-            GetComponentInChildren<Camera>().gameObject.SetActive(false);
-            rig.isKinematic = true;
-        }
     }
 
     [PunRPC]
@@ -120,8 +122,35 @@ public class PlayerController : MonoBehaviourPun
     }
 
     [PunRPC]
-    void die()
+    void Die()
     {
+        curHp = 0;
+        dead = true;
 
+        GameManager.instance.alivePlayers--;
+
+        // host will check win condition
+        if (PhotonNetwork.IsMasterClient)
+            GameManager.instance.CheckWinCondition();
+
+        // is this out player?
+        if (photonView.IsMine)
+        {
+            if (curAttackId != 0)
+                GameManager.instance.GetPlayer(curAttackId).photonView.RPC("AddKill", RpcTarget.All);
+
+            // set the cam to spectator
+            GetComponentInChildren<CameraController>().SetAsSpectator();
+
+            // disable the physics and hide the player
+            rig.isKinematic = true;
+            transform.position = new Vector3(0, -50, 0);
+        }
+    }
+
+    [PunRPC]
+    public void AddKill()
+    {
+        kills++;
     }
 }
