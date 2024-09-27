@@ -43,7 +43,7 @@ public class CameraController : MonoBehaviour
             float z = Input.GetAxis("Vertical");
             float y = 0;
 
-            if (Input.GetKey(KeyCode.End))
+            if (Input.GetKey(KeyCode.E))
                 y = 1;
             else if (Input.GetKey(KeyCode.Q))
                 y = -1;
