@@ -1,5 +1,6 @@
 using Photon.Pun;
 using Photon.Realtime;
+using System.Collections;
 using UnityEngine;
 
 public class PlayerController : MonoBehaviourPun
@@ -11,11 +12,26 @@ public class PlayerController : MonoBehaviourPun
     [Header("Components")]
     public Rigidbody rig;
 
+    [Header("Photon")]
     public int id;
     public Player photonPlayer;
 
+    [Header("Stats")]
+    public int curHp;
+    public int maxHp;
+    public int kills;
+    public bool dead;
+    private bool flashingDamage;
+    public MeshRenderer mr;
+
+    private int curAttackId;
+    // public PlayerWeapon weapon;
+
     private void Update()
     {
+        if (!photonView.IsMine || dead)
+            return;
+
         Move();
 
         if (Input.GetKeyDown(KeyCode.Space))
@@ -60,5 +76,52 @@ public class PlayerController : MonoBehaviourPun
             GetComponentInChildren<Camera>().gameObject.SetActive(false);
             rig.isKinematic = true;
         }
+    }
+
+    [PunRPC]
+    public void TakeDamage(int attackerId, int damage)
+    {
+        if (dead)
+            return;
+
+        curHp -= damage;
+        curAttackId = attackerId;
+
+        // flash the player red
+        photonView.RPC("DamageFlash", RpcTarget.Others);
+
+        // update the health bat UI
+
+        // die if no health left
+        if (curHp <= 0)
+            photonView.RPC("Die", RpcTarget.All);
+    }
+
+    [PunRPC]
+    void DamageFlash()
+    {
+        if (flashingDamage)
+            return;
+
+        StartCoroutine(DamageFlashCoRoutine());
+
+        IEnumerator DamageFlashCoRoutine()
+        {
+            flashingDamage = true;
+
+            Color defaultColor = mr.material.color;
+            mr.material.color = Color.red;
+
+            yield return new WaitForSeconds(0.05f);
+
+            mr.material.color = defaultColor;
+            flashingDamage = false;
+        }
+    }
+
+    [PunRPC]
+    void die()
+    {
+
     }
 }
