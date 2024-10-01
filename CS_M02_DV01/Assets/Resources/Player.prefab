@@ -16,6 +16,7 @@ GameObject:
   - component: {fileID: 4739138107942649849}
   - component: {fileID: 1999570370742830239}
   - component: {fileID: 4507478611059999269}
+  - component: {fileID: 3337146000365022717}
   m_Layer: 0
   m_Name: Player
   m_TagString: Player
@@ -156,12 +157,12 @@ MonoBehaviour:
   jumpForce: 5
   rig: {fileID: 3201085455189059148}
   id: 0
-  curHp: 0
-  maxHp: 0
+  curHp: 100
+  maxHp: 100
   kills: 0
   dead: 0
-  mr: {fileID: 0}
-  weapon: {fileID: 0}
+  mr: {fileID: 3734825979953230640}
+  weapon: {fileID: 3337146000365022717}
 --- !u!114 &1999570370742830239
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -201,6 +202,26 @@ MonoBehaviour:
   m_SynchronizeRotation: 0
   m_SynchronizeScale: 0
   m_UseLocal: 1
+--- !u!114 &3337146000365022717
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1136323421616223171}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ff58450764d70334093a267b052d0576, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  damage: 5
+  curAmmo: 50
+  maxAmmo: 50
+  bulletSpeed: 30
+  shootRate: 0.25
+  bulletPrefab: {fileID: 4710617523256367137, guid: 6b66bcef18406554289ef00f9027d43f, type: 3}
+  bulletSpaenPos: {fileID: 1458718429590701951}
+  player: {fileID: 4739138107942649849}
 --- !u!1 &4685601851949404325
 GameObject:
   m_ObjectHideFlags: 0
@@ -336,7 +357,7 @@ Transform:
   m_GameObject: {fileID: 6530531121656379199}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0.075, y: 0.37800002, z: 1.046}
+  m_LocalPosition: {x: 0.075, y: 0.37800002, z: 1.139}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []

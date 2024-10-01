@@ -45,7 +45,7 @@ public class PlayerWeapon : MonoBehaviour
     {
         // spawn and orientate it
         GameObject bulletObj = Instantiate(bulletPrefab, pos, Quaternion.identity);
-        bulletObj.transform.position = dir;
+        bulletObj.transform.forward = dir;
 
         // get bullet script
         Bullet bulletScript = bulletObj.GetComponent<Bullet>();
