@@ -27,11 +27,11 @@ public class GameManager : MonoBehaviourPun
     {
         players = new PlayerController[PhotonNetwork.PlayerList.Length];
         alivePlayers = players.Length;
-        photonView.RPC("SpawnPlayer", RpcTarget.All);
+        photonView.RPC("ImInGame", RpcTarget.All);
     }
 
     [PunRPC]
-    void IMInGame()
+    void ImInGame()
     {
         playersInGame++;
 
@@ -86,7 +86,7 @@ public class GameManager : MonoBehaviourPun
         Invoke("GoBackToMenu", postGameTime);
     }
 
-    void GobackToMenu ()
+    void GoBackToMenu ()
     {
         NetworkManger.instance.ChangeScene("Menu");
     }
