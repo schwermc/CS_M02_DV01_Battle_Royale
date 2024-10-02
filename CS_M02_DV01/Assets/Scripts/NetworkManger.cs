@@ -11,7 +11,7 @@ public class NetworkManger : MonoBehaviourPunCallbacks
 
     private void Awake()
     {
-        instance = this;
+        // instance = this;
         // DontDestroyOnLoad(gameObject);
 
         // if an instance already exist and it's not this one - destroy it
